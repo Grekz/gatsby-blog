@@ -1,21 +1,37 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, graphql } from "gatsby"
 
-import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
+const PostLink = ({node: {slug, title}}) => <li>
+  <Link to={slug}>{title}</Link>
+</li>
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
+const IndexPage = ({data}) => (
+  <ul>
+    {data.allContentfulPost.edges.map( ({node}) => <PostLink node={node} />)}
+  </ul>
 )
 
 export default IndexPage
+
+export const pageQuery = graphql`
+  query pageQuery {
+    allContentfulPost ( 
+      filter: {
+        node_locale: { eq:"en" }
+      },
+      sort:{ fields: [publishDate], order: DESC }
+    ){
+      edges {
+        node {
+          title
+          slug
+          content {
+            childMarkdownRemark {
+              excerpt
+            }
+          }
+        }
+      }
+    }
+  }
+`
