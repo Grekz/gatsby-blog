@@ -4,22 +4,18 @@ jobs:
     branches:
         only: master
     docker:
-      # specify the version you desire here
-      - image: circleci/node:7.10
+      - image: circleci/node:10.15
     steps:
       - checkout
       - restore_cache:
           key: v1-dependencies-{{ checksum "package.json" }}
-
       - run: 
           name: Install dependencies
           command: npm install
-
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
       - run:
           name: test
           command: echo "no tests"
@@ -27,7 +23,6 @@ jobs:
       - run:
           name: build
           command: npm run build    
-
       - run:
           name: Install awscli
           command: |
