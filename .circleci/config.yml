@@ -9,8 +9,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          key: v1-dependencies-
+          key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: 
           name: Install dependencies
@@ -36,4 +35,4 @@ jobs:
               sudo pip install awscli
       - run: 
           name: deploy to production
-          command: aws s3 sync public s3://preview.khaledgarbaya.net --delete --cache-control "max-age=3153600"
+          command: aws s3 sync public s3://grekz-bucket-paris-eu-s3.s3.amazonaws.com --delete --cache-control "max-age=3153600"
