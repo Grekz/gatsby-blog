@@ -33,6 +33,11 @@ jobs:
           command: |
               sudo apt-get install python-pip python-dev
               sudo pip install awscli
+      - run:
+          name: Setting Environment vars
+          command: |
+              export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+              export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
       - run: 
           name: deploy to production
-          command: aws s3 sync public s3://grekz-bucket-paris-eu-s3.s3.amazonaws.com --delete --cache-control "max-age=3153600"
+          command: aws s3 sync public s3://grekz-public-bucket --delete --cache-control "max-age=3153600"
